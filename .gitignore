@@ -1,0 +1,19 @@
+# idea files
+*.iml
+*.ipr
+.idea/
+
+
+# distributables dir
+dist/**
+build/**
+distributables/**
+
+# test results
+reports/**
+
+
+## temp files
+nohup.out
+backups/
+tmp/
