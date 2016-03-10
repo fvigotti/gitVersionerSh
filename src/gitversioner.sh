@@ -110,10 +110,10 @@ get_or_initialize_version(){
       cat "$FILE_VERSION_NAME"
     else
       DEFAULT_INIT_VERSION="0.0.0"
-      echo "Could not find a VERSION ( ${FILE_VERSION_NAME} ) file"
-      read -p "Do you want to create a version file and start from scratch ? will start from = ${DEFAULT_INIT_VERSION} ....  [y]" RESPONSE
+      echo "Could not find a VERSION ( ${FILE_VERSION_NAME} ) file" >&2
+      read -p "Do you want to create a version file and start from scratch ? will start from = ${DEFAULT_INIT_VERSION} ....  [y]"  RESPONSE
       [[ "$RESPONSE" =~ ^( |y|Y|yes|Yes|YES)$ ]] || {
-        echo 'exiting.. you choosed to interrupt the script by not typing yes'
+        echo 'exiting.. you choosed to interrupt the script by not typing yes' >&2
         exit 0
       }
       echo DEFAULT_INIT_VERSION
