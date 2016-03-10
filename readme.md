@@ -9,6 +9,17 @@
 - `--debug` will set -x in bash ( debugging every command )
 - `--major` will set major update in release branch (to be used only with `start`)
 
+## git workflow details
+ - `master` <- permanent branch 
+ - `dev` <- permanent branch 
+ - `feature-xxx` <- suggested name for features to merge in *dev* 
+ - `issue-xxx` <- suggested name for fixes to merge in *dev/release* 
+ - `hotfix-xxx` <- suggested name for hotfix to merge in *master* 
+ - `release-vN.N.N` <- will be created and deleted by gitversioner.sh
+  
+ - file *CHANGES* contain changelog
+ - file *VERSION* contain semantic version (major.minor.patch) ie: `1.2.3`
+ 
 ## `start` description:
 ```
  create release-N.N.N branch from dev with version update (minor -> x.++.z)
