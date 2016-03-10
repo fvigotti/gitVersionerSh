@@ -59,14 +59,14 @@ assertCorrectVersionFormat(){
 
 assertEverythingHasBeenCommitted(){
   [[ -z $(git status -s) ]] || {
-    echo 'fatal error, uncommitted changes cannot initiate release branch, please commit before starting..'
+    echo '[FATAL ERROR] uncommitted changes cannot initiate release branch, please commit before starting..'
     exit 1
   }
 }
 
 validateGitPath(){
   [ -d "${1}/.git" ] || {
-    echo 'wrong expected path, this script is supposed to run from a subdirectory of main project ) project main path extracted = '$1
+    echo '[FATAL ERROR] wrong expected path, this script is supposed to run from a subdirectory of main project ) project main path extracted = '$1
     exit 1
   }
 }
@@ -75,7 +75,7 @@ validateGitPath(){
 assertDevBranchIsCurrentBranch(){
   t=$($GIT_CMD_CURRENT_BRANCH)
   [ "${t}x" == "${BRANCH_NAME_DEV}x" ] || {
-   echo 'fatal error, current branch should be "'${BRANCH_NAME_DEV}'" but is : '$t
+   echo '[FATAL ERROR] current branch should be "'${BRANCH_NAME_DEV}'" but is : '$t
    exit 1
   }
 }
@@ -83,7 +83,7 @@ assertDevBranchIsCurrentBranch(){
 assertMasterBranchIsCurrentBranch(){
   t=$($GIT_CMD_CURRENT_BRANCH)
   [ "${t}x" == "${BRANCH_NAME_MASTER}x" ] || {
-   echo 'fatal error, current branch should be "'${BRANCH_NAME_MASTER}'" but is : '$t
+   echo '[FATAL ERROR], current branch should be "'${BRANCH_NAME_MASTER}'" but is : '$t
    exit 1
   }
 }
@@ -99,7 +99,7 @@ assertDevBranchExist(){
 assertNoReleaseBranchesAlreadyExists(){
 t=$(git branch --list | grep $BRANCH_NAME_RELEASE_prefix | wc -l)
  [ $t -lt 1 ] || {
- echo 'error, release branches already exists >>>'$(git branch --list | grep $BRANCH_NAME_RELEASE_prefix)
+ echo '[FATAL ERROR] release branches already exists >>>'$(git branch --list | grep $BRANCH_NAME_RELEASE_prefix)
  exit 1
  }
 }
@@ -110,10 +110,10 @@ get_or_initialize_version(){
       cat "$FILE_VERSION_NAME"
     else
       DEFAULT_INIT_VERSION="0.0.0"
-      echo "Could not find a VERSION ( ${FILE_VERSION_NAME} ) file" >&2
+      echo "[WARNING] Could not find a VERSION ( ${FILE_VERSION_NAME} ) file" >&2
       read -p "Do you want to create a version file and start from scratch ? will start from = ${DEFAULT_INIT_VERSION} ....  [y]"  RESPONSE
       [[ "$RESPONSE" =~ ^( |y|Y|yes|Yes|YES)$ ]] || {
-        echo 'exiting.. you choosed to interrupt the script by not typing yes' >&2
+        echo '[EXCEPTION] you choosed to interrupt the script by not typing yes' >&2
         exit 0
       }
       echo $DEFAULT_INIT_VERSION
@@ -161,7 +161,7 @@ assertReleaseBranchNameMatchContentOfVersionFile(){
   VERSION_FILE_CONTENT=$(getContentOfVersionFile)
 
   [ "${RELEASE_BRANCH_NAME}" = "${BRANCH_NAME_RELEASE_prefix}${VERSION_FILE_CONTENT}" ] || {
-    echo 'fatal error, VERSION NOT MATCHING ! VERSION file contain :'$VERSION_FILE_CONTENT' but release branch is : '$RELEASE_BRANCH_NAME' prefis is: '$BRANCH_NAME_RELEASE_prefix
+    echo '[FATAL ERROR] VERSION NOT MATCHING ! VERSION file contain :'$VERSION_FILE_CONTENT' but release branch is : '$RELEASE_BRANCH_NAME' prefis is: '$BRANCH_NAME_RELEASE_prefix
     exit 1
   }
 }
@@ -170,22 +170,24 @@ assertReleaseBranchNameMatchContentOfVersionFile(){
 assertReleaseHasBeenAlreadyMergedInCurrentBranch(){
  t=$(git branch --no-merge | grep $BRANCH_NAME_RELEASE_prefix | wc -l) ##list branch not merged in master ( grep release- branch )
  [ $t -eq 0 ] || {
-  echo 'fatal error, release branch ['$RELEASE_BRANCH_NAME'] should has been merged in [master] branch manually (to manually resolve possible conficts)! please merge and retry.. '
+  echo '[FATAL ERROR] release branch ['$RELEASE_BRANCH_NAME'] should has been merged in [master] branch manually (to manually resolve possible conficts)! please merge and retry.. '
   exit 1
  }
 }
 updated_changelog_sincePreviousVersion_and_tag(){
+  NEXT_VERSION=$1
+  assertCorrectVersionFormat $NEXT_VERSION
+
   PREVIOUS_TAGGED_VERSION=$(eval $GIT_CMD_PREVIOUS_TAGGED_VERSION)
-  VERSION_FILE_CONTENT=$(getContentOfVersionFile)
   tmpfile=$(mktemp)
 
-  echo "Version ${VERSION_FILE_CONTENT}:" > $tmpfile
+  echo "Version ${NEXT_VERSION}:" > $tmpfile
 
   [ -z "${PREVIOUS_TAGGED_VERSION}" ] && {
    echo 'this is first tagged version, extracting whole commit history '
    git log --pretty=format:"%cn %h %ci - %s" | grep -v ' Patch Version ' | grep -v 'Updated changelog' >> $tmpfile
   } || {
-   echo 'updating commit history since last tagged version ('${PREVIOUS_TAGGED_VERSION}') -> (v'${VERSION_FILE_CONTENT}')'
+   echo 'updating commit history since last tagged version ('${PREVIOUS_TAGGED_VERSION}') -> (v'${NEXT_VERSION}')'
    git log --pretty=format:"%cn %h %ci - %s" "${PREVIOUS_TAGGED_VERSION}"...HEAD | grep -v ' Patch Version ' | grep -v 'Updated changelog'  >> $tmpfile
   }
 
@@ -195,7 +197,7 @@ updated_changelog_sincePreviousVersion_and_tag(){
   mv $tmpfile $FILE_CHANGELOG_NAME
   git add $FILE_CHANGELOG_NAME
   git commit -m "Updated changelog"
-  git tag -a -m "Tagging version ${VERSION_FILE_CONTENT}" "v${VERSION_FILE_CONTENT}"
+  git tag -a -m "Tagging version ${NEXT_VERSION}" "v${NEXT_VERSION}"
 }
 
 
@@ -247,7 +249,9 @@ do_end(){
   assertReleaseHasBeenAlreadyMergedInCurrentBranch
   RELEASE_BRANCH_NAME=$(get_existing_release_branch_name)
   git merge $RELEASE_BRANCH_NAME
-  updated_changelog_sincePreviousVersion_and_tag
+
+  NEXT_VERSION=$(getContentOfVersionFile)
+  updated_changelog_sincePreviousVersion_and_tag $NEXT_VERSION
 
   ## TODO ask confirmation if release branch is not pushed remotely ( -d vs -D during deletion )
   git branch -D  $RELEASE_BRANCH_NAME
@@ -270,7 +274,7 @@ do_patch(){
   assertCorrectVersionFormat $NEXT_VERSION
   echo "next version will be ${NEXT_VERSION}"
 
-  updated_changelog_sincePreviousVersion_and_tag
+  updated_changelog_sincePreviousVersion_and_tag $NEXT_VERSION
   echo 'SUCCESS! HOTFIX patch applied , current version is v'$(getContentOfVersionFile)
 }
 
