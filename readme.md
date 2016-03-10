@@ -29,5 +29,7 @@ update version (patch -> x.y.++), update changelog with commit already merged in
 
 ## if something goes wrong..
 ```
-merge everything in dev and start delete unsuccessful `release-N.N.N` branch
+- merge everything in dev and start delete unsuccessful `release-N.N.N` branch
+- if version tags does not match, fix them (delete them or update VERSION file accordingly) 
 ```
+
