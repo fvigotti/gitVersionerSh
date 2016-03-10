@@ -116,7 +116,7 @@ get_or_initialize_version(){
         echo 'exiting.. you choosed to interrupt the script by not typing yes' >&2
         exit 0
       }
-      echo DEFAULT_INIT_VERSION
+      echo $DEFAULT_INIT_VERSION
     fi
 }
 
