@@ -1,0 +1,9 @@
+Version :
+francesco 71172cc 2016-03-10 16:50:15 +0000 - removed duplication, fixed error in grow_version
+francesco 16e51f3 2016-03-10 16:48:08 +0000 - fixed version file initialization
+francesco bc17bdf 2016-03-10 16:47:46 +0000 - fixed version file initialization
+francesco 0557fce 2016-03-10 16:45:25 +0000 - fixed bug in menu
+francesco bb768a4 2016-03-10 16:43:03 +0000 - added gitversioner first release, updated readme
+francesco 61d7869 2016-03-09 17:56:17 +0000 - first commit
+
+
