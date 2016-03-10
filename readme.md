@@ -1,6 +1,6 @@
 # bash scripts that help versioning code
 
-# usage: 
+# usage (from the directory of the project to manage): 
 - `gitversioner.sh start` start release branch  
 - `gitversioner.sh end` end release branch  
 - `gitversioner.sh patch` handle hotfix  
