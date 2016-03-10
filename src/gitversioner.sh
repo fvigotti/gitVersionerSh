@@ -31,7 +31,7 @@ case $key in
     end)
       menuChoice="do_end"
     ;;
-    end)
+    patch)
       menuChoice="do_patch"
     ;;
     --debug)
@@ -65,7 +65,7 @@ assertEverythingHasBeenCommitted(){
 }
 
 validateGitPath(){
-  [ -d "$1/.git" ] || {
+  [ -d "${1}/.git" ] || {
     echo 'wrong expected path, this script is supposed to run from a subdirectory of main project ) project main path extracted = '$1
     exit 1
   }
