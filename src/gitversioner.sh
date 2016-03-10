@@ -124,7 +124,7 @@ get_or_initialize_version(){
 grow_version(){
   START=$1
   incr=$2 # Major|Minor|Patch
-  BASE_LIST=(`echo $BASE_STRING | tr '.' ' '`)
+  BASE_LIST=(`echo $START | tr '.' ' '`)
   V_MAJOR=${BASE_LIST[0]}
   V_MINOR=${BASE_LIST[1]}
   V_PATCH=${BASE_LIST[2]}
@@ -261,11 +261,6 @@ do_patch(){
   assertEverythingHasBeenCommitted
 
   assertMasterBranchIsCurrentBranch
-
-  LAST_VERSION=$(get_or_initialize_version)
-  assertCorrectVersionFormat $LAST_VERSION
-  echo "previous version was ${LAST_VERSION}"
-
 
   LAST_VERSION=$(get_or_initialize_version)
   assertCorrectVersionFormat $LAST_VERSION
