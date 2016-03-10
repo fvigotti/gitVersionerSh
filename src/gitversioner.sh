@@ -274,6 +274,8 @@ do_patch(){
   assertCorrectVersionFormat $NEXT_VERSION
   echo "next version will be ${NEXT_VERSION}"
 
+
+  git_do_updateVersionFile  $FILE_VERSION_NAME $NEXT_VERSION
   updated_changelog_sincePreviousVersion_and_tag $NEXT_VERSION
   echo 'SUCCESS! HOTFIX patch applied , current version is v'$(getContentOfVersionFile)
 }
