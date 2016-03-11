@@ -152,6 +152,16 @@ assertGitTagExist(){
 }
 
 
+assertTagExist(){
+  #args :
+  # $1 = tag to search for
+  t=$(git tag | egrep '^'$1'$' | wc -l)
+  [ $t -gt 0 ] || {
+  echo 'error, tag ['$1'] does not exist!'
+  exit 1
+  }
+}
+
 
 build_Live(){
   [ "$ARGS_CREATE_COMPRESSED" = "default" ] && ARGS_CREATE_COMPRESSED="no"
@@ -183,6 +193,7 @@ build_Versioned(){
   # extract version pure numbers (N.N.N)
   ARGS_VERSION_TO_BUILD=$(clearVersionPattern $ARGS_VERSION_TO_BUILD)
   assertCorrectVersionFormat $ARGS_VERSION_TO_BUILD
+  assertTagExist "v${ARGS_VERSION_TO_BUILD}"
 
   # ie : apppath/dist_versioned/v1.2.3/
   ARCHIVE_DESTINATION_VERSIONED="${VERSIONED_DISTRIBUTABLE_PATH}/v${ARGS_VERSION_TO_BUILD}/"
