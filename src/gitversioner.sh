@@ -255,8 +255,8 @@ do_end(){
 
   ## TODO ask confirmation if release branch is not pushed remotely ( -d vs -D during deletion )
   git branch -D  $RELEASE_BRANCH_NAME
-  git push origin --tags
   echo 'SUCCESS! release executed, current version is v'$(getContentOfVersionFile)
+  echo '## REMEMBER, push tag to remote repository ! -->  git push origin --tags  <--'
 
 }
 
