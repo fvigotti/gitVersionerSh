@@ -1,3 +1,7 @@
+Version 0.1.2:
+francesco 01b4366 2016-03-11 14:12:22 +0000 - improved args in gitversioner
+
+
 Version 0.1.1:
 francesco a8f6cd0 2016-03-11 14:09:35 +0000 - removed automated push ( require login on remote repository also from console  and it's not necessary)
 
