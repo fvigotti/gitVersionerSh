@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 GIT_PROJECT_DIR=`pwd`
 
-if [[ $# < 1 ]]; then
+print_usage(){
   echo "usage: $0 [--debug,--major] start|end|patch "
+}
+
+if [[ $# < 1 ]]; then
+  print_usage
+  exit 1
 fi
 
 ####### CONSTANTS
@@ -41,7 +46,8 @@ case $key in
       EXECUTE_MAJOR_UPDATE="yes"
     ;;
     *)
-            # unknown option
+      print_usage
+      exit 1
     ;;
 esac
 shift # past argument or value
