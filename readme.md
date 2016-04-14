@@ -1,5 +1,7 @@
 *bash scripts that help versioning code*
 
+**install: `curl https://raw.githubusercontent.com/fvigotti/gitVersionerSh/master/src/utils/install.sh | sudo bash`**
+
 # *gitversioner.sh*  : handle semantic versioning 
 
     usage (from the directory of the project to manage):
