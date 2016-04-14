@@ -38,6 +38,6 @@ echo "check if app has been already downloaded"
   echo "script found in current path, installing the version found in :""${CURRENT_DIR}/.."
   install_from_path "${CURRENT_DIR}/.."
 } || {
-  downloadFromGithub "${TMP_APP_DIR}/gitVersionerSh"
-  install_from_path ${TMP_APP_DIR}
+  downloadFromGithub "${TMP_APP_DIR}"
+  install_from_path "${TMP_APP_DIR}/gitVersionerSh"
 }
