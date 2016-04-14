@@ -236,7 +236,7 @@ assertEverythingHasBeenCommitted
 
 [ "${ARGS_VERSION_TO_BUILD}" = "live" ] && {
   build_Live
-} || {
+} || { # build last version
   build_Versioned
 }
 

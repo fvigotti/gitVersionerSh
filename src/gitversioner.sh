@@ -65,7 +65,8 @@ assertCorrectVersionFormat(){
 
 assertEverythingHasBeenCommitted(){
   [[ -z $(git status -s) ]] || {
-    echo '[FATAL ERROR] uncommitted changes cannot initiate release branch, please commit before starting..'
+    echo '[FATAL ERROR] uncommitted changes cannot initiate release branch, please commit before starting..  git status > '
+    git status -s
     exit 1
   }
 }
