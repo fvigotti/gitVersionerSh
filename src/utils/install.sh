@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -xe ## debug everything in this script
-
+echo "USAGE: sudo bash $0  // or curl https://raw.githubusercontent.com/fvigotti/gitVersionerSh/master/src/utils/install.sh | sudo bash"
 export GITVERSIONER_DEST_PATH=/usr/bin/gitversioner
 export VERSIONEDBUILDER_DEST_PATH=/usr/bin/versionedbuilder
 echo "install gitversioner in  ${GITVERSIONER_DEST_PATH} and ${VERSIONEDBUILDER_DEST_PATH} "
