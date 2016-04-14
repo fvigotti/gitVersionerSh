@@ -56,6 +56,8 @@ available command args
 
 # *versionedbuilder.sh*
     Enforce conventions in local distributable and versioned builds
+**assumptions**
+    by default **--build-cmd** build current workspace in **`./dist/live/`**  
         
 ## path conventions:
 - `./dist/live/` <- build script put everything there
